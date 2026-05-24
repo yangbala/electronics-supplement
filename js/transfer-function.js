@@ -29,6 +29,7 @@ export function evalH(s, poles, zeros, K = 1) {
 // H(s)/s 在極點 pi 的殘差（部分分式展開，pi ≠ 0）
 // Res = K · ∏(pᵢ−zⱼ) / (pᵢ · ∏_{pⱼ≠pᵢ}(pᵢ−pⱼ))
 function residueAtPole(pi, poles, zeros, K) {
+  if (Math.sqrt(pi.re * pi.re + pi.im * pi.im) < 1e-9) return { re: 0, im: 0 };
   let num = complex(K);
   for (const z of zeros) num = cmul(num, csub(pi, z));
   let den = { ...pi }; // 分母起始為 pᵢ（來自 H(s)/s 的 1/s）
@@ -37,7 +38,9 @@ function residueAtPole(pi, poles, zeros, K) {
       den = cmul(den, csub(pi, p));
     }
   }
-  return cdiv(num, den);
+  const r = cdiv(num, den);
+  if (!isFinite(r.re) || !isFinite(r.im)) return { re: 0, im: 0 };
+  return r;
 }
 
 // 計算步階響應（殘差法 + 時域疊加）
@@ -57,8 +60,11 @@ export function stepResponse(poles, zeros, K = 1, numPoints = 600) {
     );
     tMax = (4 * Math.PI) / omega;
   } else {
-    const minSigma = Math.min(...poles.filter((p) => p.re < 0).map((p) => Math.abs(p.re)));
-    tMax = 6 / (minSigma || 1);
+    const stablePoles = poles.filter((p) => p.re < 0);
+    const minSigma = stablePoles.length > 0
+      ? Math.min(...stablePoles.map((p) => Math.abs(p.re)))
+      : 1;
+    tMax = 6 / minSigma;
   }
 
   const times = Array.from({ length: numPoints }, (_, i) => (i / (numPoints - 1)) * tMax);
@@ -81,7 +87,7 @@ export function stepResponse(poles, zeros, K = 1, numPoints = 600) {
       const eSigT = Math.exp(sigma * t);
       y += eSigT * (Rr * Math.cos(omega * t) - Ri * Math.sin(omega * t));
     }
-    return y;
+    return isFinite(y) ? y : 0;
   });
 
   return { times, values, isUnstable, isMarginal, dcGain };

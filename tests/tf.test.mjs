@@ -48,3 +48,23 @@ test('dampingInfo: p=-1±2j → ζ=1/√5, ωₙ=√5', () => {
   assert.ok(Math.abs(info[0].wn - Math.sqrt(5)) < 1e-9);
   assert.ok(Math.abs(info[0].zeta - 1 / Math.sqrt(5)) < 1e-9);
 });
+
+test('stepResponse: empty poles (pure gain) returns valid data', () => {
+  const { times, values, isUnstable } = stepResponse([], [], 2, 10);
+  assert.strictEqual(isUnstable, false);
+  assert.strictEqual(times.length, 10);
+  assert.ok(times.every(Number.isFinite), 'all times finite');
+  assert.ok(values.every(Number.isFinite), 'all values finite');
+});
+
+test('stepResponse: integrator pole p=0 returns finite values', () => {
+  const { values, isMarginal } = stepResponse([complex(0)], [], 1, 50);
+  assert.strictEqual(isMarginal, true);
+  assert.ok(values.every(Number.isFinite), 'no NaN/Infinity in values');
+});
+
+test('stepResponse: repeated poles p=-1,-1 returns finite values', () => {
+  const { values, isUnstable } = stepResponse([complex(-1), complex(-1)], [], 1, 50);
+  assert.strictEqual(isUnstable, false);
+  assert.ok(values.every(Number.isFinite), 'no NaN/Infinity in repeated-pole case');
+});
