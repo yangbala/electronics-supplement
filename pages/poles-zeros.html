@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>極點與零點 — 電子學補充教材</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <a href="../index.html" class="navbar-brand">⚡ 電子學補充教材</a>
+    <a href="poles-zeros.html" class="navbar-link active">極點與零點</a>
+  </nav>
+
+  <div class="page-header">
+    <h1>極點與零點對系統的影響</h1>
+    <p>拖曳 s 平面上的極點（×）與零點（○），即時觀察系統響應的變化。右鍵點擊可刪除。</p>
+  </div>
+
+  <div class="container">
+    <div class="concept-cards" id="concept-cards"></div>
+
+    <div class="preset-bar" id="preset-bar">
+      <label>快速情境：</label>
+    </div>
+
+    <div class="interactive-area">
+      <!-- 左：s 平面 -->
+      <div class="panel">
+        <div class="panel-header">
+          <span>s 平面（複數頻率域）</span>
+          <span>× 極點　○ 零點</span>
+        </div>
+        <div class="splane-toolbar" id="splane-toolbar">
+          <button class="tool-btn active" id="btn-add-pole">＋ 極點</button>
+          <button class="tool-btn" id="btn-add-zero">＋ 零點</button>
+          <button class="tool-btn active" id="btn-conjugate">共軛對稱 ✓</button>
+          <div class="gain-label">
+            K =
+            <input id="gain-input" type="number" min="0.1" max="10" step="0.1" value="1">
+          </div>
+        </div>
+        <div class="panel-body" id="splane-container"></div>
+      </div>
+
+      <!-- 右：三個面板 -->
+      <div class="right-panels">
+        <div class="panel">
+          <div class="panel-header">步階響應 Step Response</div>
+          <div class="panel-body" id="step-container"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-header">波德圖 Bode Plot</div>
+          <div class="panel-body" id="bode-container"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-header">系統資訊</div>
+          <div class="info-panel" id="info-panel-container"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="deep-section" id="deep-section"></div>
+  </div>
+
+  <script src="../lib/d3.v7.min.js"></script>
+  <script type="module" src="../js/poles-zeros-main.js"></script>
+</body>
+</html>
