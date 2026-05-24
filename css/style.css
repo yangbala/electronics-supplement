@@ -263,14 +263,16 @@ body {
 .zero-rhp { stroke: #a78bfa; }
 
 @keyframes rhp-pulse {
-  0%, 100% { opacity: 0.12; r: 14px; }
-  50%       { opacity: 0.32; r: 20px; }
+  0%, 100% { opacity: 0.12; transform: scale(1); }
+  50%       { opacity: 0.32; transform: scale(1.5); }
 }
 
 .rhp-glow {
   fill: var(--accent-red);
   animation: rhp-pulse 1.2s ease-in-out infinite;
   pointer-events: none;
+  transform-box: fill-box;
+  transform-origin: center;
 }
 
 /* 系統資訊面板 */
