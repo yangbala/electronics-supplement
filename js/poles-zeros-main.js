@@ -85,9 +85,15 @@ const CONCEPTS = [
   {
     cls: 'lhp-card',
     title: '左半平面極點（LHP，σ < 0）',
-    html: `<p>實部為負的極點對應時域中的<strong>衰減指數</strong> e<sup>σt</sup>（σ&lt;0）。響應最終收斂至有限值，系統<strong>穩定</strong>。</p>
-           <p>極點越靠近虛軸（|σ| 越小），衰減越慢；越往左衰減越快，系統反應越靈敏。</p>
-           <div class="formula">H(s) = a/(s+a)，a&gt;0 &nbsp;→&nbsp; y(t) = (1−e<sup>−at</sup>)u(t)</div>`,
+    html: `<p>實部為負（σ &lt; 0）的極點在時域產生<strong>衰減包絡</strong> e<sup>σt</sup>，響應最終收斂至有限值，系統<strong>BIBO 穩定</strong>。極點距虛軸越遠（|σ| 越大），時間常數 τ = 1/|σ| 越小，衰減越快，系統頻寬越寬。</p>
+           <p class="formula-caption">▸ 一階系統：實數極點 s = −a，a &gt; 0，τ = 1/a</p>
+           <div class="formula">H(s) = a / (s + a)<br>
+h(t) = a · e<sup>−at</sup> · u(t)　　　（衝激響應）<br>
+y(t) = (1 − e<sup>−t/τ</sup>) · u(t)　（單位步階響應）</div>
+           <p class="formula-caption">▸ 二階欠阻尼系統：共軛極點 s = −σ ± jω<sub>d</sub>，0 &lt; ζ &lt; 1</p>
+           <div class="formula">ω<sub>n</sub> = √(σ²+ω<sub>d</sub>²)，&nbsp;ζ = σ/ω<sub>n</sub>，&nbsp;ω<sub>d</sub> = ω<sub>n</sub>√(1−ζ²)<br>
+H(s) = ω<sub>n</sub>² / (s² + 2ζω<sub>n</sub>s + ω<sub>n</sub>²)<br>
+y(t) = 1 − e<sup>−ζω<sub>n</sub>t</sup>/√(1−ζ²) · sin(ω<sub>d</sub>t + arccos ζ) · u(t)</div>`,
     presetIdx: 0,
   },
   {
