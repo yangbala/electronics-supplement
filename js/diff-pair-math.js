@@ -1,7 +1,7 @@
 // js/diff-pair-math.js
 const KN  = 1e-3;   // kn·(W/L) = 1 mA/V²
 const VTH = 0.5;    // MOSFET 臨界電壓 0.5 V
-const VT  = 0.026;  // BJT 熱電壓 26 mV (300 K)
+const VT  = 0.026;  // 近似值；精確值 kT/q = 0.02585 V (300 K)
 const VDD = 3.3;    // 電源電壓（固定）
 
 /**
@@ -12,6 +12,8 @@ const VDD = 3.3;    // 電源電壓（固定）
  * @returns {{ id1, id2, vout1, vout2, vgs0, vov, gm, av }}
  */
 export function calcBias(ibias, rd, type) {
+  if (ibias <= 0 || rd < 0) throw new RangeError(`calcBias: ibias must be > 0, rd >= 0`);
+  if (type !== 'mos' && type !== 'bjt') throw new TypeError(`calcBias: unknown type "${type}"`);
   const id   = ibias / 2;
   const vout = VDD - id * rd;
   if (type === 'mos') {
@@ -27,6 +29,7 @@ export function calcBias(ibias, rd, type) {
 }
 
 function _splitCurrents(ibias, vid, type) {
+  if (type !== 'mos' && type !== 'bjt') throw new TypeError(`_splitCurrents: unknown type "${type}"`);
   if (type === 'bjt') {
     const id1 = ibias / (1 + Math.exp(-vid / VT));
     return { id1, id2: ibias - id1 };

@@ -22,6 +22,11 @@ test('calcBias MOS: vout = VDD - id*rd', () => {
   assert.ok(near(r.vout1, 3.3 - 5e-4 * 2e3, 1e-9));
 });
 
+test('calcBias BJT: vout = VDD - id*rd', () => {
+  const r = calcBias(1e-3, 2e3, 'bjt');
+  assert.ok(near(r.vout1, 3.3 - 5e-4 * 2e3, 1e-9));
+});
+
 test('calcBias MOS: av = -gm*rd', () => {
   const r = calcBias(1e-3, 2e3, 'mos');
   assert.ok(near(r.av, -r.gm * 2e3, 1e-9));
