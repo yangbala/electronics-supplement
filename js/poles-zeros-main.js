@@ -84,7 +84,7 @@ PRESETS.forEach((preset) => {
 const CONCEPTS = [
   {
     cls: 'lhp-card',
-    title: '左半平面極點（LHP，σ < 0）',
+    title: '左半平面極點（LHP，$\\sigma &lt; 0$）',
     html: `<p>實部為負（$\\sigma < 0$）的極點在時域產生<strong>衰減包絡</strong> $e^{\\sigma t}$，響應最終收斂，系統 <strong>BIBO 穩定</strong>。$|\\sigma|$ 越大，時間常數 $\\tau = 1/|\\sigma|$ 越小，衰減越快，頻寬越寬。</p>
            <p class="formula-caption">▸ 一階系統：實數極點 $s = -a$，$a > 0$</p>
            <div class="formula">$$H(s) = \\dfrac{a}{s + a},\\quad \\tau = \\dfrac{1}{a}$$
@@ -98,7 +98,7 @@ $$y(t) = 1 - \\dfrac{e^{-\\zeta\\omega_n t}}{\\sqrt{1-\\zeta^2}}\\,\\sin\\!\\lef
   },
   {
     cls: 'rhp-card',
-    title: '右半平面極點（RHP，σ > 0）',
+    title: '右半平面極點（RHP，$\\sigma &gt; 0$）',
     html: `<p>實部為正（$\\sigma > 0$）的極點產生<strong>增長指數</strong> $e^{\\sigma t}$，響應隨時間無限增大，系統<strong>不穩定</strong>。</p>
            <p><em>任何一個</em> RHP 極點都足以使系統不穩定，不論其餘極點位置。</p>
            <div class="formula">$$H(s) = \\dfrac{a}{s-a},\\; a>0 \\quad\\Longrightarrow\\quad y(t) \\propto e^{+at}\\;\\text{（發散）}$$</div>`,
@@ -106,7 +106,7 @@ $$y(t) = 1 - \\dfrac{e^{-\\zeta\\omega_n t}}{\\sqrt{1-\\zeta^2}}\\,\\sin\\!\\lef
   },
   {
     cls: 'jw-card',
-    title: '虛軸極點（σ = 0，臨界穩定）',
+    title: '虛軸極點（$\\sigma = 0$，臨界穩定）',
     html: `<p>實部恰好為零的極點產生<strong>等幅正弦振盪</strong>，振盪頻率為極點虛部 $\\omega_0$ rad/s，既不衰減也不增大。</p>
            <p>工程實務中通常不可接受，因為任何微小擾動都可能使實際系統發散。</p>
            <div class="formula">$$H(s) = \\dfrac{\\omega_0^2}{s^2+\\omega_0^2}\\quad\\Longrightarrow\\quad y(t) \\propto \\sin(\\omega_0 t)$$</div>`,
