@@ -104,14 +104,13 @@ body {
 .concept-card-body p { margin-bottom: 6px; }
 
 .formula {
-  font-family: var(--font-mono);
   background: var(--bg);
+  border-left: 3px solid rgba(255, 215, 0, 0.35);
   border-radius: 4px;
-  padding: 6px 10px;
-  margin: 4px 0 6px;
-  color: var(--accent-gold);
-  font-size: 0.78rem;
-  line-height: 1.7;
+  padding: 4px 14px 8px;
+  margin: 4px 0 8px;
+  overflow-x: auto;
+  color: var(--text);
 }
 
 .formula-caption {

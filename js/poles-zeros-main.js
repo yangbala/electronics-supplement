@@ -85,31 +85,31 @@ const CONCEPTS = [
   {
     cls: 'lhp-card',
     title: '左半平面極點（LHP，σ < 0）',
-    html: `<p>實部為負（σ &lt; 0）的極點在時域產生<strong>衰減包絡</strong> e<sup>σt</sup>，響應最終收斂至有限值，系統<strong>BIBO 穩定</strong>。極點距虛軸越遠（|σ| 越大），時間常數 τ = 1/|σ| 越小，衰減越快，系統頻寬越寬。</p>
-           <p class="formula-caption">▸ 一階系統：實數極點 s = −a，a &gt; 0，τ = 1/a</p>
-           <div class="formula">H(s) = a / (s + a)<br>
-h(t) = a · e<sup>−at</sup> · u(t)　　　（衝激響應）<br>
-y(t) = (1 − e<sup>−t/τ</sup>) · u(t)　（單位步階響應）</div>
-           <p class="formula-caption">▸ 二階欠阻尼系統：共軛極點 s = −σ ± jω<sub>d</sub>，0 &lt; ζ &lt; 1</p>
-           <div class="formula">ω<sub>n</sub> = √(σ²+ω<sub>d</sub>²)，&nbsp;ζ = σ/ω<sub>n</sub>，&nbsp;ω<sub>d</sub> = ω<sub>n</sub>√(1−ζ²)<br>
-H(s) = ω<sub>n</sub>² / (s² + 2ζω<sub>n</sub>s + ω<sub>n</sub>²)<br>
-y(t) = 1 − e<sup>−ζω<sub>n</sub>t</sup>/√(1−ζ²) · sin(ω<sub>d</sub>t + arccos ζ) · u(t)</div>`,
+    html: `<p>實部為負（$\\sigma < 0$）的極點在時域產生<strong>衰減包絡</strong> $e^{\\sigma t}$，響應最終收斂，系統 <strong>BIBO 穩定</strong>。$|\\sigma|$ 越大，時間常數 $\\tau = 1/|\\sigma|$ 越小，衰減越快，頻寬越寬。</p>
+           <p class="formula-caption">▸ 一階系統：實數極點 $s = -a$，$a > 0$</p>
+           <div class="formula">$$H(s) = \\dfrac{a}{s + a},\\quad \\tau = \\dfrac{1}{a}$$
+$$h(t) = a\\,e^{-at}\\,u(t)\\quad\\text{（衝激響應）}$$
+$$y(t) = \\bigl(1 - e^{-t/\\tau}\\bigr)\\,u(t)\\quad\\text{（步階響應）}$$</div>
+           <p class="formula-caption">▸ 二階欠阻尼：共軛極點 $s = -\\sigma \\pm j\\omega_d$，$0 < \\zeta < 1$</p>
+           <div class="formula">$$\\omega_n = \\sqrt{\\sigma^2+\\omega_d^2},\\quad \\zeta = \\dfrac{\\sigma}{\\omega_n},\\quad \\omega_d = \\omega_n\\sqrt{1-\\zeta^2}$$
+$$H(s) = \\dfrac{\\omega_n^2}{s^2 + 2\\zeta\\omega_n s + \\omega_n^2}$$
+$$y(t) = 1 - \\dfrac{e^{-\\zeta\\omega_n t}}{\\sqrt{1-\\zeta^2}}\\,\\sin\\!\\left(\\omega_d t + \\arccos\\zeta\\right)u(t)$$</div>`,
     presetIdx: 0,
   },
   {
     cls: 'rhp-card',
     title: '右半平面極點（RHP，σ > 0）',
-    html: `<p>實部為正的極點產生<strong>增長指數</strong> e<sup>σt</sup>（σ&gt;0），響應隨時間無限增大，系統<strong>不穩定</strong>。</p>
+    html: `<p>實部為正（$\\sigma > 0$）的極點產生<strong>增長指數</strong> $e^{\\sigma t}$，響應隨時間無限增大，系統<strong>不穩定</strong>。</p>
            <p><em>任何一個</em> RHP 極點都足以使系統不穩定，不論其餘極點位置。</p>
-           <div class="formula">H(s) = a/(s−a)，a&gt;0 &nbsp;→&nbsp; y(t) ∝ e<sup>+at</sup>（發散）</div>`,
+           <div class="formula">$$H(s) = \\dfrac{a}{s-a},\\; a>0 \\quad\\Longrightarrow\\quad y(t) \\propto e^{+at}\\;\\text{（發散）}$$</div>`,
     presetIdx: 3,
   },
   {
     cls: 'jw-card',
     title: '虛軸極點（σ = 0，臨界穩定）',
-    html: `<p>實部恰好為零的極點產生<strong>等幅正弦振盪</strong>，振盪頻率為極點虛部 ω₀ rad/s，既不衰減也不增大。</p>
+    html: `<p>實部恰好為零的極點產生<strong>等幅正弦振盪</strong>，振盪頻率為極點虛部 $\\omega_0$ rad/s，既不衰減也不增大。</p>
            <p>工程實務中通常不可接受，因為任何微小擾動都可能使實際系統發散。</p>
-           <div class="formula">H(s) = ω₀²/(s²+ω₀²) &nbsp;→&nbsp; y(t) ∝ sin(ω₀t)</div>`,
+           <div class="formula">$$H(s) = \\dfrac{\\omega_0^2}{s^2+\\omega_0^2}\\quad\\Longrightarrow\\quad y(t) \\propto \\sin(\\omega_0 t)$$</div>`,
     presetIdx: 2,
   },
   {
@@ -117,7 +117,7 @@ y(t) = 1 − e<sup>−ζω<sub>n</sub>t</sup>/√(1−ζ²) · sin(ω<sub>d</sub
     title: '右半平面零點（Non-minimum Phase）',
     html: `<p>RHP 零點不影響系統穩定性（穩定性由極點決定），但會造成<strong>非最小相位</strong>行為。</p>
            <p>步階響應初始方向與終值<em>相反</em>（先往反方向再回頭），波德圖相位滯後超出增益衰減的預期，這是控制系統設計的重要限制。</p>
-           <div class="formula">H(s) = (1−s)/(1+s) &nbsp;→&nbsp; 初始步階響應反向後收斂</div>`,
+           <div class="formula">$$H(s) = \\dfrac{1-s}{1+s}\\quad\\Longrightarrow\\quad\\text{初始步階響應反向後收斂}$$</div>`,
     presetIdx: 4,
   },
 ];
@@ -153,23 +153,32 @@ document.getElementById('deep-section').innerHTML = `
   <h2>深入說明</h2>
 
   <h3>1. 拉普拉斯轉換與 s 域的幾何意義</h3>
-  <p>拉普拉斯轉換 ℒ{f(t)} = F(s) 將時域訊號映射到複數頻率域，其中 s = σ + jω。
-     σ（實部）控制指數包絡的增減速率，ω（虛部）控制振盪頻率。
-     系統傳遞函數 H(s) 在 s 平面上的極點決定了系統的自然響應模式，零點則決定各模式的激發程度。</p>
+  <p>拉普拉斯轉換 $\\mathcal{L}\\{f(t)\\} = F(s)$ 將時域訊號映射到複數頻率域，其中 $s = \\sigma + j\\omega$。
+     $\\sigma$（實部）控制指數包絡的增減速率，$\\omega$（虛部）控制振盪頻率。
+     系統傳遞函數 $H(s)$ 在 s 平面上的極點決定了系統的自然響應模式，零點則決定各模式的激發程度。</p>
 
   <h3>2. 特徵方程式根與穩定性（Routh-Hurwitz 判準）</h3>
-  <p>線性非時變（LTI）系統穩定的充要條件：傳遞函數分母多項式（特徵方程式）的所有根皆位於左半平面（σ &lt; 0）。</p>
-  <div class="formula">D(s) = sⁿ + aₙ₋₁sⁿ⁻¹ + ⋯ + a₁s + a₀ = 0&nbsp;&nbsp;→&nbsp;&nbsp;所有根 Re(sₖ) &lt; 0</div>
+  <p>線性非時變（LTI）系統穩定的充要條件：傳遞函數分母多項式（特徵方程式）的所有根皆位於左半平面（$\\sigma < 0$）。</p>
+  <div class="formula">$$D(s) = s^n + a_{n-1}s^{n-1} + \\cdots + a_1 s + a_0 = 0 \\implies \\operatorname{Re}(s_k) < 0 \\;\\forall\\, k$$</div>
   <p>Routh-Hurwitz 判準提供了一種無需直接求根就能判斷穩定性的代數方法：構造 Routh 陣列，若第一列元素全為正，則系統穩定。</p>
 
   <h3>3. 電路範例：RC 低通濾波器的極點</h3>
   <p>RC 低通濾波器的傳遞函數：</p>
-  <div class="formula">H(s) = 1/(RCs + 1) = (1/RC) / (s + 1/RC)</div>
-  <p>極點位於 s = −1/RC（左半平面），時間常數 τ = RC 決定衰減速率，截止頻率 ωc = 1/RC rad/s。
-     增大 R 或 C 使極點更靠近虛軸，對應更慢的響應（更窄的通帶）。這是「極點位置直接對應物理性質」的最直觀範例。</p>`;
+  <div class="formula">$$H(s) = \\dfrac{1}{RCs + 1} = \\dfrac{1/RC}{s + 1/RC},\\quad \\omega_c = \\dfrac{1}{RC}\\text{ rad/s}$$</div>
+  <p>極點位於 $s = -1/RC$（左半平面），時間常數 $\\tau = RC$ 決定衰減速率，截止頻率 $\\omega_c = 1/RC$ rad/s。
+     增大 $R$ 或 $C$ 使極點更靠近虛軸，對應更慢的響應（更窄的通帶）。這是「極點位置直接對應物理性質」的最直觀範例。</p>`;
 
 // ── 初始載入：二階欠阻尼 ────────────────────────────────
 const init = PRESETS[1];
 sPlane.setState(init.poles, init.zeros, init.K);
 gainInput.value = init.K;
 handleChange({ poles: init.poles, zeros: init.zeros, K: init.K });
+
+// ── KaTeX 渲染（所有動態注入的內容已就緒後執行）────────
+renderMathInElement(document.body, {
+  delimiters: [
+    { left: '$$', right: '$$', display: true  },
+    { left: '$',  right: '$',  display: false },
+  ],
+  throwOnError: false,
+});
