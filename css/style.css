@@ -214,6 +214,12 @@ body {
   background: rgba(74,158,255,0.1);
 }
 
+.tool-btn.delete-btn.active {
+  border-color: var(--accent-red);
+  color: var(--accent-red);
+  background: rgba(255,107,107,0.1);
+}
+
 .tool-btn:hover { color: var(--text); }
 
 .gain-label {
@@ -261,6 +267,14 @@ body {
 .zero-circle:active { cursor: grabbing; }
 .zero-lhp { stroke: var(--accent-gold); }
 .zero-rhp { stroke: #a78bfa; }
+
+/* 刪除模式：游標改為指標，懸停時變紅 */
+.delete-mode .pole-x,
+.delete-mode .zero-circle {
+  cursor: pointer;
+}
+.delete-mode .pole-x:hover { fill: var(--accent-red); opacity: 0.8; }
+.delete-mode .zero-circle:hover { stroke: var(--accent-red); opacity: 0.8; }
 
 @keyframes rhp-pulse {
   0%, 100% { opacity: 0.12; transform: scale(1); }

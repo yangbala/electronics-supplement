@@ -18,6 +18,7 @@ function handleChange({ poles, zeros, K }) {
 // ── 工具列 ──────────────────────────────────────────────
 const btnPole   = document.getElementById('btn-add-pole');
 const btnZero   = document.getElementById('btn-add-zero');
+const btnDelete = document.getElementById('btn-delete');
 const btnConj   = document.getElementById('btn-conjugate');
 const gainInput = document.getElementById('gain-input');
 
@@ -25,12 +26,21 @@ btnPole.addEventListener('click', () => {
   sPlane.setAddMode('pole');
   btnPole.classList.add('active');
   btnZero.classList.remove('active');
+  btnDelete.classList.remove('active');
 });
 
 btnZero.addEventListener('click', () => {
   sPlane.setAddMode('zero');
   btnZero.classList.add('active');
   btnPole.classList.remove('active');
+  btnDelete.classList.remove('active');
+});
+
+btnDelete.addEventListener('click', () => {
+  sPlane.setAddMode('delete');
+  btnDelete.classList.add('active');
+  btnPole.classList.remove('active');
+  btnZero.classList.remove('active');
 });
 
 let conjLocked = true;

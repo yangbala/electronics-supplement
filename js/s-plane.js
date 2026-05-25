@@ -72,6 +72,7 @@ export function createSPlane(containerSelector, { onChange } = {}) {
 
   // Click empty area to add
   clickRect.on('click', function (event) {
+    if (addMode === 'delete') return;
     const [mx, my] = d3.pointer(event);
     const sx = xScale.invert(mx);
     const sy = yScale.invert(my);
@@ -113,6 +114,7 @@ export function createSPlane(containerSelector, { onChange } = {}) {
         .text('×')
         .call(
           d3.drag().on('drag', function (event) {
+            if (addMode === 'delete') return;
             poles[i] = { re: xScale.invert(event.x), im: yScale.invert(event.y) };
             if (conjugateLocked && Math.abs(poles[i].im) > 1e-4) {
               const partner = i % 2 === 0 ? i + 1 : i - 1;
@@ -124,6 +126,13 @@ export function createSPlane(containerSelector, { onChange } = {}) {
             onChange?.({ poles, zeros, K });
           })
         )
+        .on('click', function (event) {
+          if (addMode !== 'delete') return;
+          event.stopPropagation();
+          poles.splice(i, 1);
+          render();
+          onChange?.({ poles, zeros, K });
+        })
         .on('contextmenu', function (event) {
           event.preventDefault();
           poles.splice(i, 1);
@@ -141,11 +150,19 @@ export function createSPlane(containerSelector, { onChange } = {}) {
         .attr('r', 8)
         .call(
           d3.drag().on('drag', function (event) {
+            if (addMode === 'delete') return;
             zeros[i] = { re: xScale.invert(event.x), im: yScale.invert(event.y) };
             render();
             onChange?.({ poles, zeros, K });
           })
         )
+        .on('click', function (event) {
+          if (addMode !== 'delete') return;
+          event.stopPropagation();
+          zeros.splice(i, 1);
+          render();
+          onChange?.({ poles, zeros, K });
+        })
         .on('contextmenu', function (event) {
           event.preventDefault();
           zeros.splice(i, 1);
@@ -165,7 +182,10 @@ export function createSPlane(containerSelector, { onChange } = {}) {
     getState() {
       return { poles: poles.map((p) => ({ ...p })), zeros: zeros.map((z) => ({ ...z })), K };
     },
-    setAddMode(mode) { addMode = mode; },
+    setAddMode(mode) {
+      addMode = mode;
+      svg.classed('delete-mode', mode === 'delete');
+    },
     setConjugateLocked(locked) { conjugateLocked = locked; },
   };
 }
