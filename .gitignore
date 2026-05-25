@@ -1,0 +1,10 @@
+# Claude Code 工作檔
+.claude/
+.superpowers/
+
+# Node.js
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
