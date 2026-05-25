@@ -143,7 +143,7 @@ export function createSPlane(containerSelector, { onChange } = {}) {
           d3.drag().on('drag', function (event) {
             zeros[i] = { re: xScale.invert(event.x), im: yScale.invert(event.y) };
             render();
-            onChange?.({ zeros, zeros, K });
+            onChange?.({ poles, zeros, K });
           })
         )
         .on('contextmenu', function (event) {
