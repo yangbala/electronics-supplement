@@ -88,7 +88,7 @@ const CONCEPTS = [
     html: `<p>實部為負（$\\sigma < 0$）的極點在時域產生<strong>衰減包絡</strong> $e^{\\sigma t}$，響應最終收斂，系統 <strong>BIBO 穩定</strong>。$|\\sigma|$ 越大，時間常數 $\\tau = 1/|\\sigma|$ 越小，衰減越快，頻寬越寬。</p>
            <p class="formula-caption">▸ 一階系統：實數極點 $s = -a$，$a > 0$</p>
            <div class="formula">$$H(s) = \\dfrac{a}{s + a},\\quad \\tau = \\dfrac{1}{a}$$
-$$h(t) = a\\,e^{-at}\\,u(t)\\quad\\text{（衝激響應）}$$
+$$h(t) = a\\,e^{-at}\\,u(t)\\quad\\text{（脈衝響應）}$$
 $$y(t) = \\bigl(1 - e^{-t/\\tau}\\bigr)\\,u(t)\\quad\\text{（步階響應）}$$</div>
            <p class="formula-caption">▸ 二階欠阻尼：共軛極點 $s = -\\sigma \\pm j\\omega_d$，$0 < \\zeta < 1$</p>
            <div class="formula">$$\\omega_n = \\sqrt{\\sigma^2+\\omega_d^2},\\quad \\zeta = \\dfrac{\\sigma}{\\omega_n},\\quad \\omega_d = \\omega_n\\sqrt{1-\\zeta^2}$$
