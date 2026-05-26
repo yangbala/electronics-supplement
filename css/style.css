@@ -430,26 +430,35 @@ body {
 
 .step-body {
   display: flex;
-  gap: 20px;
-  flex: 1;
-  align-items: flex-start;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .circuit-wrap {
-  flex-shrink: 0;
-  width: 280px;
-  min-width: 240px;
+  width: 100%;
+  max-width: 520px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 8px;
 }
 
-.step-right {
-  flex: 1;
+/* 控制列：滑桿（左）+ 圖表（右）橫排 */
+.step-controls {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.controls-sliders {
+  flex: 0 0 220px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
+}
+
+.controls-chart {
+  flex: 1;
 }
 
 .control-group {
