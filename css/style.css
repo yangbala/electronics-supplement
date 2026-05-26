@@ -437,6 +437,8 @@ body {
 
 .circuit-wrap {
   flex-shrink: 0;
+  width: 280px;
+  min-width: 240px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
