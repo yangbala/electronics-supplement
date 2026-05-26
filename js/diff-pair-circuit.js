@@ -1,31 +1,27 @@
 // js/diff-pair-circuit.js — viewBox 0 0 340 255
+// 電路符號依照 Razavi 教科書標準畫法繪製。
 
 const NS = 'http://www.w3.org/2000/svg';
 const C = {
-  rail:     '#4a9eff',
-  wire:     '#c9d1d9',
-  device:   '#3fb950',
-  resistor: '#ffd700',
-  input:    '#ff6b6b',
-  vout:     '#ffd700',
-  isrc:     '#58a6ff',
-  muted:    '#8b949e',
+  rail: '#4a9eff', wire: '#c9d1d9', device: '#3fb950',
+  resistor: '#ffd700', input: '#ff6b6b', vout: '#ffd700',
+  isrc: '#58a6ff', muted: '#8b949e',
 };
 
 // ── 幾何常數（viewBox 0 0 340 255） ─────────────────────────────────────────
 const X1 = 90, X2 = 250, XM = 170;
-const VX1 = 36, VX2 = 304;         // VDD 橫軌兩端
+const VX1 = 36, VX2 = 304;
 const Y_VDD   = 18;
-const Y_RD_T  = 26,  Y_RD_B  = 76; // 電阻（鋸齒形）
-const Y_DRN   = 88;                 // 汲極 / 集極出口（連到電阻下緣）
-const BOX_HH  = 22;                 // 電晶體方塊半高
-const Y_TR_CY = 124;               // 電晶體中心
-const Y_TR_T  = Y_TR_CY - BOX_HH; // = 102  ← 上端連接點（drain/collector）
-const Y_TR_B  = Y_TR_CY + BOX_HH; // = 146  ← 下端連接點（source/emitter）
-const Y_SRC   = 160;               // 源極 / 射極出口
-const Y_NODE  = 176;               // 共源節點（尾電流上方）
-const Y_IS_CY = 198;              // 電流源圓心（r=18）
-const Y_GND   = 234;
+const Y_RD_T  = 26,  Y_RD_B  = 78;
+const Y_DRN   = 90;                   // 汲極 / 集極出口
+const BOX_HH  = 22;                   // 電晶體半高（cy ± 22 = 連接點）
+const Y_TR_CY = 126;
+const Y_TR_T  = Y_TR_CY - BOX_HH;    // = 104  ← drain/collector 連接點
+const Y_TR_B  = Y_TR_CY + BOX_HH;    // = 148  ← source/emitter 連接點
+const Y_SRC   = 162;
+const Y_NODE  = 178;
+const Y_IS_CY = 200;
+const Y_GND   = 236;
 
 // ── 主繪製函式 ─────────────────────────────────────────────────────────────
 export function createCircuit(svgEl, type) {
@@ -35,44 +31,44 @@ export function createCircuit(svgEl, type) {
   _line(svgEl, VX1, Y_VDD, VX2, Y_VDD, C.rail, 2.5);
   _halo(svgEl, XM, Y_VDD - 5, 'VDD = 3.3 V', C.rail, 11, 'middle');
 
-  // ── 左分支 ──────────────────────────────────────────────────────────────
+  // ── 左分支（電阻 + 縱線） ─────────────────────────────────────────────────
   _line(svgEl, X1, Y_VDD, X1, Y_RD_T, C.wire, 2);
   _zigzagR(svgEl, X1, Y_RD_T, Y_RD_B);
-  _halo(svgEl, X1 + 16, (Y_RD_T + Y_RD_B) / 2 + 4,
+  _halo(svgEl, X1 + 14, (Y_RD_T + Y_RD_B) / 2 + 4,
         type === 'mos' ? 'RD' : 'RC', C.resistor, 11);
   _line(svgEl, X1, Y_RD_B, X1, Y_DRN, C.wire, 2);
-  // 汲極接點 → 電晶體頂部中心
-  _line(svgEl, X1, Y_DRN, X1, Y_TR_T, C.wire, 2);
 
-  // ── 右分支 ──────────────────────────────────────────────────────────────
+  // ── 右分支 ───────────────────────────────────────────────────────────────
   _line(svgEl, X2, Y_VDD, X2, Y_RD_T, C.wire, 2);
   _zigzagR(svgEl, X2, Y_RD_T, Y_RD_B);
-  _halo(svgEl, X2 + 16, (Y_RD_T + Y_RD_B) / 2 + 4,
+  _halo(svgEl, X2 + 14, (Y_RD_T + Y_RD_B) / 2 + 4,
         type === 'mos' ? 'RD' : 'RC', C.resistor, 11);
   _line(svgEl, X2, Y_RD_B, X2, Y_DRN, C.wire, 2);
+
+  // ── 汲極 / 集極線（電阻下緣 → 電晶體頂端連接點） ──────────────────────────
+  _line(svgEl, X1, Y_DRN, X1, Y_TR_T, C.wire, 2);
   _line(svgEl, X2, Y_DRN, X2, Y_TR_T, C.wire, 2);
 
-  // ── 電晶體符號 ──────────────────────────────────────────────────────────
-  // 汲極/源極連線以 cx 為中心上下連出（與主幹 X1/X2 對齊）
+  // ── 電晶體符號（標準教科書畫法） ─────────────────────────────────────────
   if (type === 'mos') {
     _mosfet(svgEl, X1, Y_TR_CY, 'M1', 'left');
     _mosfet(svgEl, X2, Y_TR_CY, 'M2', 'right');
-    // 閘極輸入線：直接連到方塊側邊（BW/2 = 18）
-    _line(svgEl, VX1, Y_TR_CY, X1 - 18, Y_TR_CY, C.input, 1.8);
-    _line(svgEl, X2 + 18, Y_TR_CY, VX2, Y_TR_CY, C.input, 1.8);
+    // 閘極輸入線：終點在閘極電極位置（cx ∓ 14）
+    _line(svgEl, VX1, Y_TR_CY, X1 - 14, Y_TR_CY, C.input, 1.8);
+    _line(svgEl, X2 + 14, Y_TR_CY, VX2, Y_TR_CY, C.input, 1.8);
     _halo(svgEl, VX1 - 2, Y_TR_CY + 16, 'Vin+', C.input, 11, 'middle');
     _halo(svgEl, VX2 + 2, Y_TR_CY + 16, 'Vin−', C.input, 11, 'middle');
   } else {
     _bjt(svgEl, X1, Y_TR_CY, 'Q1', 'left');
     _bjt(svgEl, X2, Y_TR_CY, 'Q2', 'right');
-    // 基極輸入線：直接連到圓圈側邊（R = 21）
-    _line(svgEl, VX1, Y_TR_CY, X1 - 21, Y_TR_CY, C.input, 1.8);
-    _line(svgEl, X2 + 21, Y_TR_CY, VX2, Y_TR_CY, C.input, 1.8);
+    // 基極輸入線：終點在基極 bar 位置（cx ∓ 8）
+    _line(svgEl, VX1, Y_TR_CY, X1 - 8, Y_TR_CY, C.input, 1.8);
+    _line(svgEl, X2 + 8, Y_TR_CY, VX2, Y_TR_CY, C.input, 1.8);
     _halo(svgEl, VX1 - 2, Y_TR_CY + 16, 'Vb1', C.input, 11, 'middle');
     _halo(svgEl, VX2 + 2, Y_TR_CY + 16, 'Vb2', C.input, 11, 'middle');
   }
 
-  // 源極連線 → 尾電流節點
+  // ── 源極 / 射極線 → 尾電流節點 ───────────────────────────────────────────
   _line(svgEl, X1, Y_TR_B, X1, Y_SRC,  C.wire, 2);
   _line(svgEl, X2, Y_TR_B, X2, Y_SRC,  C.wire, 2);
   _line(svgEl, X1, Y_SRC,  X1, Y_NODE, C.wire, 2);
@@ -82,17 +78,17 @@ export function createCircuit(svgEl, type) {
   _dot(svgEl, X2, Y_NODE, C.wire, 3.5);
   _line(svgEl, XM, Y_NODE, XM, Y_IS_CY - 18, C.wire, 2);
 
-  // 電流源圓圈
+  // ── 電流源（圓圈 + 箭頭） ─────────────────────────────────────────────────
   _circle(svgEl, XM, Y_IS_CY, 18, C.isrc, 2);
-  _halo(svgEl, XM, Y_IS_CY + 5, 'I', C.isrc, 15, 'middle');
+  _isrcArrow(svgEl, XM, Y_IS_CY);
   _line(svgEl, XM, Y_IS_CY + 18, XM, Y_GND, C.wire, 2);
   _gnd(svgEl, XM, Y_GND);
 
-  // Vout 接點（黃色小圓）
+  // ── Vout 接點（黃色節點點） ───────────────────────────────────────────────
   _dot(svgEl, X1, Y_DRN, C.vout, 4);
   _dot(svgEl, X2, Y_DRN, C.vout, 4);
 
-  // ── 即時數值標籤（帶背景色塊） ──────────────────────────────────────────
+  // ── 即時數值標籤（帶色框背景） ────────────────────────────────────────────
   _badge(svgEl, X1 - 5,  Y_DRN,       '─', C.vout,   10, 'end',   'lbl-vout1');
   _badge(svgEl, X2 + 5,  Y_DRN,       '─', C.vout,   10, 'start', 'lbl-vout2');
   _badge(svgEl, X1 - 5,  Y_SRC - 2,   '─', C.device, 10, 'end',   'lbl-id1');
@@ -110,80 +106,96 @@ export function updateCircuit(svgEl, { id1, id2, vout1, vout2, ibias }) {
   _setTxt(svgEl, 'lbl-ibias', fmtI(ibias));
 }
 
-// ── MOSFET 符號（NMOS，D 在頂、S 在底、G 從側邊） ────────────────────────────
-// 汲極出口：(cx, Y_TR_T) ；源極出口：(cx, Y_TR_B) ← 對齊主幹
+// ════════════════════════════════════════════════════════════════════════════
+// MOSFET 符號（NMOS 增強型，標準教科書畫法）
+//
+//        D (cx, cy-22)
+//        |
+//        ├── drain stub ─┐   ← 水平短線從通道 bar 接到 cx
+//        |  (channel bar)│   ← 通道 bar（垂直短線）
+//   G ───|  (gate oxide) │   ← 閘極電極 bar（垂直，與通道 bar 有間距）
+//        |  (channel bar)│
+//     ←──┤── source stub─┘   ← 水平短線（含 NMOS 箭頭，指向通道 bar）
+//        |
+//        S (cx, cy+22)
+//
+// side='left'  → 閘極在左（M1），通道在右
+// side='right' → 閘極在右（M2），鏡像
+// ════════════════════════════════════════════════════════════════════════════
 function _mosfet(svgEl, cx, cy, label, side) {
-  const BW = 36, BHH = 22;          // 方塊半寬/半高
-  const gx = side === 'left' ? cx - BW / 2 : cx + BW / 2;
+  // 方向係數：side='left' 時閘極在 cx 左方
+  const d  = side === 'left' ? -1 : 1;   // +1 → 往右（M2），-1 → 往左（M1）
+  const gx = cx + d * 14;                 // 閘極電極 x（M1: cx-14, M2: cx+14）
+  const bx = cx + d * 6;                  // 通道 bar x（M1: cx-6,  M2: cx+6）
 
-  // 外框
-  const bx = cx - BW / 2, by = cy - BHH;
-  const rect = _el(svgEl, 'rect');
-  rect.setAttribute('x', bx); rect.setAttribute('y', by);
-  rect.setAttribute('width', BW); rect.setAttribute('height', BHH * 2);
-  rect.setAttribute('fill', '#0f1a10');
-  rect.setAttribute('stroke', C.device); rect.setAttribute('stroke-width', '2');
-  rect.setAttribute('rx', '4');
+  // 閘極電極（垂直粗線，代表閘極金屬）
+  _line(svgEl, gx, cy - 14, gx, cy + 14, C.device, 3);
 
-  // 內部：閘極電極 bar（左 or 右側，垂直短線）
-  const barX = side === 'left' ? bx + 9 : bx + BW - 9;
-  _line(svgEl, barX, cy - 11, barX, cy + 11, C.device, 3);
+  // 通道 bar（垂直線，與閘極電極平行，代表半導體通道）
+  _line(svgEl, bx, cy - 12, bx, cy + 12, C.device, 2);
 
-  // 汲極 stub（bar → 頂部中心）
-  const stubX = side === 'left' ? barX + 5 : barX - 5;
-  _line(svgEl, barX, cy - 8, stubX, cy - 8, C.wire, 1.5);
-  _line(svgEl, stubX, cy - 8, cx,   cy - BHH, C.wire, 1.5);
+  // 汲極 stub（水平，從通道 bar 連到主幹 cx）
+  _line(svgEl, bx, cy - 10, cx, cy - 10, C.wire, 2);
 
-  // 源極 stub（bar → 底部中心，NMOS 箭頭指向 bar）
-  _line(svgEl, barX, cy + 8, stubX, cy + 8, C.wire, 1.5);
-  _line(svgEl, stubX, cy + 8, cx,   cy + BHH, C.wire, 1.5);
-  _arrowHead(svgEl, barX + (side === 'left' ? 6 : -6), cy + 8,
-             barX, cy + 8, C.device, 5);
+  // 源極 stub（水平，從通道 bar 連到主幹 cx）
+  _line(svgEl, bx, cy + 10, cx, cy + 10, C.wire, 2);
 
-  // 閘極接點小圓（標示 gate 連接位置）
-  _dot(svgEl, gx, cy, C.device, 3);
+  // NMOS 箭頭（指向通道 bar，表示 inversion channel 方向）
+  // 箭頭尖端在通道 bar，從 cx 側往 bx 側射入
+  _arrowHead(svgEl, cx + d * (-4), cy + 10, bx, cy + 10, C.device, 5);
 
-  // 標籤（框右側或框左側，避免和閘極線重疊）
-  const labelX = side === 'left' ? cx + BW / 2 + 5 : cx - BW / 2 - 5;
-  _halo(svgEl, labelX, cy + 5, label, C.device, 13,
+  // 主幹縱線（drain stub → 電晶體頂端；source stub → 電晶體底端）
+  _line(svgEl, cx, cy - 10, cx, Y_TR_T, C.wire, 2);
+  _line(svgEl, cx, cy + 10, cx, Y_TR_B, C.wire, 2);
+
+  // 標籤（位於兩電晶體之間的空間）
+  const lx = cx + (side === 'left' ? 5 : -5);
+  _halo(svgEl, lx, cy + 5, label, C.device, 12,
         side === 'left' ? 'start' : 'end');
 }
 
-// ── BJT 符號（NPN，C 在頂、E 在底、B 從側邊） ────────────────────────────────
-// 集極出口：(cx, Y_TR_T) ；射極出口：(cx, Y_TR_B)
+// ════════════════════════════════════════════════════════════════════════════
+// BJT 符號（NPN，標準教科書畫法）
+//
+//        C (cx, cy-22)
+//        |
+//         \ ← collector（斜線往右上）
+//     B ───| ← base bar（垂直線）
+//         /→ ← emitter（斜線往右下，箭頭向外 = NPN 方向）
+//        |
+//        E (cx, cy+22)
+//
+// side='left'  → 基極在左（Q1），集射極在右
+// side='right' → 基極在右（Q2），集射極在左（鏡像）
+// ════════════════════════════════════════════════════════════════════════════
 function _bjt(svgEl, cx, cy, label, side) {
-  const R = 21;
+  const d  = side === 'left' ? -1 : 1;
+  const bx = cx + d * 8;                  // 基極 bar x（Q1: cx-8, Q2: cx+8）
 
-  // 外殼圓
-  const circ = _el(svgEl, 'circle');
-  circ.setAttribute('cx', cx); circ.setAttribute('cy', cy); circ.setAttribute('r', R);
-  circ.setAttribute('fill', '#0f1419');
-  circ.setAttribute('stroke', C.device); circ.setAttribute('stroke-width', '2');
+  // 基極 bar（垂直粗線）
+  _line(svgEl, bx, cy - 12, bx, cy + 12, C.device, 3);
 
-  // 基極 bar（在圓內，和閘極側同方向）
-  const bx = side === 'left' ? cx - 9 : cx + 9;
-  _line(svgEl, bx, cy - 12, bx, cy + 12, C.device, 2.5);
+  // 集極（斜線從基極 bar 上方連到頂端 cx, Y_TR_T）
+  _line(svgEl, bx, cy - 8, cx, Y_TR_T, C.wire, 2);
 
-  // 集極（斜線到頂部中心）
-  const dx = side === 'left' ? 1 : -1;
-  _line(svgEl, bx, cy - 7, cx, cy - R, C.wire, 2);
+  // 射極（斜線從基極 bar 下方連到底端 cx, Y_TR_B）
+  _line(svgEl, bx, cy + 8, cx, Y_TR_B, C.wire, 2);
 
-  // 射極（斜線到底部中心，含箭頭）
-  _line(svgEl, bx, cy + 7, cx, cy + R, C.wire, 2);
-  _arrowHead(svgEl, bx + dx * 3, cy + 9, cx, cy + R, C.device, 5);
-
-  // 基極接點（圓側邊）
-  const baseEdgeX = side === 'left' ? cx - R : cx + R;
-  _line(svgEl, bx, cy, baseEdgeX, cy, C.wire, 1.5);
-  _dot(svgEl, baseEdgeX, cy, C.device, 3);
+  // NPN 箭頭（射極線上，箭頭尖端在 Y_TR_B 側，指向外側 = 電流流出）
+  // 在射極線上 2/3 處標記箭頭
+  const ex = bx + (cx - bx) * 0.65;
+  const ey = (cy + 8) + (Y_TR_B - cy - 8) * 0.65;
+  _arrowHead(svgEl, bx + (cx - bx) * 0.55, (cy + 8) + (Y_TR_B - cy - 8) * 0.55,
+             ex, ey, C.device, 5);
 
   // 標籤
-  const labelX = side === 'left' ? cx + R + 4 : cx - R - 4;
-  _halo(svgEl, labelX, cy + 5, label, C.device, 13,
+  const lx = cx + (side === 'left' ? 5 : -5);
+  _halo(svgEl, lx, cy + 5, label, C.device, 12,
         side === 'left' ? 'start' : 'end');
 }
 
-// ── SVG 輔助函式 ──────────────────────────────────────────────────────────────
+// ── 輔助繪圖函式 ──────────────────────────────────────────────────────────────
+
 function _el(parent, tag) {
   const e = document.createElementNS(NS, tag);
   parent.appendChild(e);
@@ -243,6 +255,19 @@ function _circle(p, cx, cy, r, stroke, sw = 2) {
   e.setAttribute('cx', cx); e.setAttribute('cy', cy); e.setAttribute('r', r);
   e.setAttribute('fill', '#0d1117');
   e.setAttribute('stroke', stroke); e.setAttribute('stroke-width', sw);
+}
+
+// 電流源內部箭頭（↑）
+function _isrcArrow(p, cx, cy) {
+  const aw = 5, ah = 8;
+  // 箭頭主線
+  _line(p, cx, cy + 7, cx, cy - 6, C.isrc, 2);
+  // 箭頭尖端
+  const pts = [`${cx},${cy - 8}`,
+               `${cx - aw},${cy - 8 + ah}`,
+               `${cx + aw},${cy - 8 + ah}`].join(' ');
+  const tri = _el(p, 'polygon');
+  tri.setAttribute('points', pts); tri.setAttribute('fill', C.isrc);
 }
 
 // 鋸齒電阻（American 符號）
