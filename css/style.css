@@ -11,6 +11,9 @@
   --font-mono: 'Courier New', monospace;
   --font-sans: 'Segoe UI', system-ui, sans-serif;
   --radius: 6px;
+  --hint-bg: #0f2538;
+  --hint-border: #1d4060;
+  --hint-text: #7ab8e8;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -464,12 +467,12 @@ body {
 }
 
 .hint-box {
-  background: #0f2538;
-  border: 1px solid #1d4060;
+  background: var(--hint-bg);
+  border: 1px solid var(--hint-border);
   border-radius: var(--radius);
   padding: 10px 12px;
   font-size: 0.85rem;
-  color: #7ab8e8;
+  color: var(--hint-text);
   line-height: 1.5;
 }
 

@@ -58,11 +58,11 @@
             </div>
             <div class="step-right">
               <div class="control-group">
-                <label>尾電流 I<sub>BIAS</sub> = <span id="ibias-val">1.00</span> mA</label>
+                <label for="slider-ibias">尾電流 I<sub>BIAS</sub> = <span id="ibias-val">1.00</span> mA</label>
                 <input type="range" id="slider-ibias" min="0.1" max="2.0" step="0.1" value="1.0">
               </div>
               <div class="control-group">
-                <label>R<sub>D</sub> / R<sub>C</sub> = <span id="rd-val">2.0</span> kΩ</label>
+                <label for="slider-rd">R<sub>D</sub> / R<sub>C</sub> = <span id="rd-val">2.0</span> kΩ</label>
                 <input type="range" id="slider-rd" min="0.5" max="5.0" step="0.5" value="2.0">
               </div>
               <div id="bar-chart-container"></div>
@@ -82,7 +82,7 @@
             </div>
             <div class="step-right">
               <div class="control-group">
-                <label>差動輸入 V<sub>id</sub> = <span id="vid-val">0</span> mV</label>
+                <label for="slider-vid">差動輸入 V<sub>id</sub> = <span id="vid-val">0</span> mV</label>
                 <input type="range" id="slider-vid" min="-300" max="300" step="5" value="0">
               </div>
               <div id="transfer-chart-container"></div>
