@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>差動對 — 電子學補充教材</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+</head>
+<body>
+  <nav class="navbar">
+    <a href="../index.html" class="navbar-brand">⚡ 電子學補充教材</a>
+    <a href="differential-pair.html" class="navbar-link active">差動對</a>
+  </nav>
+
+  <div class="page-header">
+    <h1>差動對偏壓與小訊號分析</h1>
+    <p>調整偏壓電流與差動輸入，即時觀察電流分配與輸出響應。</p>
+  </div>
+
+  <div class="container">
+    <!-- 元件類型切換 -->
+    <div class="type-toggle-bar">
+      <span>元件類型：</span>
+      <button class="type-btn active" id="btn-mos">MOSFET (NMOS)</button>
+      <button class="type-btn"        id="btn-bjt">BJT (NPN)</button>
+    </div>
+
+    <!-- Wizard -->
+    <div class="wizard-layout">
+      <!-- 左側導覽 -->
+      <nav class="wizard-sidebar">
+        <ol class="wizard-step-list" id="wizard-step-list">
+          <li class="wizard-step-item active" data-step="0">
+            <span class="step-dot"></span>偏壓操作點
+          </li>
+          <li class="wizard-step-item" data-step="1">
+            <span class="step-dot"></span>差動輸入特性
+          </li>
+          <li class="wizard-step-item" data-step="2">
+            <span class="step-dot"></span>小訊號增益
+          </li>
+          <li class="wizard-step-item" data-step="3">
+            <span class="step-dot"></span>MOS vs BJT 比較
+          </li>
+        </ol>
+      </nav>
+
+      <!-- 右側內容 -->
+      <div class="wizard-content">
+
+        <!-- 步驟 0：偏壓操作點 -->
+        <div class="step-panel active" id="panel-0">
+          <h2 class="step-title">步驟 1 ─ 偏壓操作點</h2>
+          <div class="step-body">
+            <div class="circuit-wrap">
+              <svg id="circuit-svg-0" width="210" height="170" viewBox="0 0 210 170"></svg>
+            </div>
+            <div class="step-right">
+              <div class="control-group">
+                <label>尾電流 I<sub>BIAS</sub> = <span id="ibias-val">1.00</span> mA</label>
+                <input type="range" id="slider-ibias" min="0.1" max="2.0" step="0.1" value="1.0">
+              </div>
+              <div class="control-group">
+                <label>R<sub>D</sub> / R<sub>C</sub> = <span id="rd-val">2.0</span> kΩ</label>
+                <input type="range" id="slider-rd" min="0.5" max="5.0" step="0.5" value="2.0">
+              </div>
+              <div id="bar-chart-container"></div>
+              <div class="hint-box">
+                Vid = 0 時，差動對完全對稱，每支電晶體各流過 I<sub>BIAS</sub>/2 的電流。
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 步驟 1：差動輸入特性 -->
+        <div class="step-panel" id="panel-1">
+          <h2 class="step-title">步驟 2 ─ 差動輸入特性</h2>
+          <div class="step-body">
+            <div class="circuit-wrap">
+              <svg id="circuit-svg-1" width="210" height="170" viewBox="0 0 210 170"></svg>
+            </div>
+            <div class="step-right">
+              <div class="control-group">
+                <label>差動輸入 V<sub>id</sub> = <span id="vid-val">0</span> mV</label>
+                <input type="range" id="slider-vid" min="-300" max="300" step="5" value="0">
+              </div>
+              <div id="transfer-chart-container"></div>
+              <div class="hint-box" id="transfer-hint">
+                BJT 為 tanh 形曲線，線性範圍約 ±4V<sub>T</sub> ≈ ±100 mV；
+                MOSFET 線性範圍約 ±V<sub>ov</sub>。
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 步驟 2：小訊號增益 -->
+        <div class="step-panel" id="panel-2">
+          <h2 class="step-title">步驟 3 ─ 小訊號增益</h2>
+          <div id="small-signal-content"></div>
+        </div>
+
+        <!-- 步驟 3：比較 -->
+        <div class="step-panel" id="panel-3">
+          <h2 class="step-title">步驟 4 ─ MOSFET vs BJT 比較</h2>
+          <div id="comparison-content"></div>
+        </div>
+
+        <!-- 導覽按鈕 -->
+        <div class="wizard-nav">
+          <button id="btn-prev" class="tool-btn" disabled>← 上一步</button>
+          <button id="btn-next" class="tool-btn active">下一步 →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../lib/d3.v7.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script type="module" src="../js/diff-pair-main.js"></script>
+</body>
+</html>

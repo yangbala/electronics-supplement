@@ -328,3 +328,223 @@ body {
 .deep-section h2 { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 14px; }
 .deep-section h3 { font-size: 0.96rem; color: var(--accent-blue); margin: 14px 0 6px; }
 .deep-section p  { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 6px; }
+
+/* ═══════════════════════════════════════════════
+   差動對 Wizard 樣式
+═══════════════════════════════════════════════ */
+.type-toggle-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.type-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 5px 14px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.type-btn.active {
+  border-color: var(--accent-blue);
+  color: var(--accent-blue);
+}
+
+.wizard-layout {
+  display: flex;
+  gap: 0;
+  min-height: 520px;
+}
+
+.wizard-sidebar {
+  width: 200px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--border);
+  padding: 16px 0;
+}
+
+.wizard-step-list {
+  list-style: none;
+}
+
+.wizard-step-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  border-left: 3px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.wizard-step-item:hover { color: var(--text); }
+
+.wizard-step-item.active {
+  color: var(--text);
+  border-left-color: var(--accent-blue);
+}
+
+.wizard-step-item.done {
+  color: var(--accent-green);
+}
+
+.step-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border);
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+
+.wizard-step-item.active .step-dot { background: var(--accent-blue); }
+.wizard-step-item.done  .step-dot  { background: var(--accent-green); }
+
+.wizard-content {
+  flex: 1;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.step-panel { display: none; flex: 1; flex-direction: column; }
+.step-panel.active { display: flex; }
+
+.step-title {
+  font-size: 1.1rem;
+  margin-bottom: 16px;
+  color: var(--text);
+}
+
+.step-body {
+  display: flex;
+  gap: 20px;
+  flex: 1;
+  align-items: flex-start;
+}
+
+.circuit-wrap {
+  flex-shrink: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px;
+}
+
+.step-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.control-group label {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.control-group input[type="range"] {
+  width: 100%;
+  accent-color: var(--accent-blue);
+}
+
+.hint-box {
+  background: #0f2538;
+  border: 1px solid #1d4060;
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  font-size: 0.85rem;
+  color: #7ab8e8;
+  line-height: 1.5;
+}
+
+.wizard-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+/* 小訊號公式卡片 */
+.formula-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.formula-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+}
+
+.formula-card h4 {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+
+.live-values {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.live-val-item { text-align: center; }
+.live-val-item .val-num {
+  font-size: 1.3rem;
+  font-family: var(--font-mono);
+  color: var(--accent-blue);
+}
+.live-val-item .val-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* 比較表 */
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  margin-top: 16px;
+}
+
+.compare-table th,
+.compare-table td {
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.compare-table th {
+  background: var(--surface);
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.compare-table tr:nth-child(even) td { background: #0f1318; }
